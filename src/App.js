@@ -1,30 +1,36 @@
 import logo from './logo.svg';
 import './App.css';
-import { useEffect } from 'react';
+import { useEffect,useState } from 'react';
 import { getRecipes } from './redux/actions/recipesActions';
 import {useDispatch} from "react-redux"
+import RecipeList from "./components/RecipeList/RecipeList"
+import RecipeDetails from "./components/RecipeDetails/RecipeDetails"
+import {Routes,Route} from "react-router-dom"
+
 function App() {
 const dispatch =useDispatch()
+const [input, setInput] = useState("")
+const [query, setQuery] = useState("pizza")
+
   useEffect(() => {
-  dispatch(getRecipes())
-  }, [])
+  dispatch(getRecipes(query))
+  }, [query])
   
+  const handleSubmit=(e)=>{
+    e.preventDefault();
+    setQuery(input)
+
+  }
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Routes>
+        <Route path="/" element={<> <form onSubmit={handleSubmit}>
+      <input placeholder="search..." onChange={(e)=>setInput(e.target.value)}/>
+      </form>
+      <RecipeList/></>} />
+      <Route path="/details/:id" element={<RecipeDetails/>}/>
+      
+      </Routes>
     </div>
   );
 }

@@ -3,16 +3,17 @@ import { GET_RECIPES_FAIL, GET_RECIPES_SUCCESS, LOAD_RECIPES } from "../constant
 
 const initialState = {
     recipes: [],
-    errors:null
+    errors:null,
+    loading:false
 }
 export const recipeReducer = (state = initialState, { type, payload }) => {
     switch (type) {
         case LOAD_RECIPES:
-            return { ...state }
+            return { ...state,loading:true }
         case GET_RECIPES_SUCCESS:
-            return { ...state, recipes: payload }
+            return { ...state, recipes: payload,loading:false }
             case GET_RECIPES_FAIL:
-                return {...state,errors:payload}
+                return {...state,errors:payload,loading:false}
         default:
             return state
     }
