@@ -1,34 +1,37 @@
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
+import { getOneRecipe } from '../../redux/actions/recipesActions'
 import './recipe.css'
 
-const RecipeDetails = ({ el }) => {
+const RecipeDetails = () => {
+  const {id}=useParams()
+  const oneRecipe=useSelector(state=>state.oneRecipe.recipe)
+  const dispatch=useDispatch()
+  useEffect(() => {
+dispatch(getOneRecipe(id))  
+   
+  }, [])
+  
   return (
-    <div><div id="container">
-      <header id="toggle" >
-        <div className="title">{/*el.label*/}</div>
+    <div>
+      
+      <div id="container">
+      <header id="toggle">
+      <div className="header"  style={{backgroundImage: `url(${oneRecipe && oneRecipe.image})`}}></div>
+      <div className="title">{oneRecipe && oneRecipe.label}</div>
       </header>
       <article>
+      
         <ul className="ingredients">
+        {oneRecipe && oneRecipe.ingredients.map(el=>
           <li>
-            <div className="amount">50ml</div>
-            <div className="ingredient">Rum</div>
-          </li>
-          <li>
-            <div className="amount">2tsp</div>
-            <div className="ingredient">Sugar</div>
-          </li>
-          <li>
-            <div className="amount">4 sprigs</div>
-            <div className="ingredient">Mint</div>
-          </li>
-          <li>
-            <div className="amount">dash</div>
-            <div className="ingredient">Soda water (optional)</div>
-          </li>
+            <div className="amount">{el.quantity} {el.measure}</div>
+            <div className="ingredient">{el.food}</div>
+          </li>)}
         </ul>
         <div className="preperation">
-          <div>Add the mint sprigs, caster sugar and a couple of tablespoons of crushed ice. </div>
-          <div>Begin 'massaging' the mix together with a spoon. The caster sugar helps to bring out the flavour of the mint. Breaking or crushing the mint makes the taste sour, hence the need to gently fold and stir. </div>
-          <div>Add 25ml of rum, more crushed ice and continue 'massaging'. Fill with ice, pour in the second 25ml shot of rum and add a dash of soda, if desired.</div>
+         Calories: {oneRecipe && Math.ceil(oneRecipe.calories)}
         </div>
       </article>
     </div></div>

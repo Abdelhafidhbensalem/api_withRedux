@@ -10,11 +10,12 @@ import {Routes,Route} from "react-router-dom"
 function App() {
 const dispatch =useDispatch()
 const [input, setInput] = useState("")
+const [cuisine, setCuisine] = useState("")
 const [query, setQuery] = useState("pizza")
 
   useEffect(() => {
-  dispatch(getRecipes(query))
-  }, [query])
+  dispatch(getRecipes(query,cuisine))
+  }, [query,cuisine])
   
   const handleSubmit=(e)=>{
     e.preventDefault();
@@ -27,9 +28,16 @@ const [query, setQuery] = useState("pizza")
         <Route path="/" element={<> <form onSubmit={handleSubmit}>
       <input placeholder="search..." onChange={(e)=>setInput(e.target.value)}/>
       </form>
+      <select onChange={(e)=>setCuisine(e.target.value)}>
+        <option value="American">Am</option>
+        <option value="Chinese">Ch</option>
+        <option value="British">Bri</option>
+        <option value="Italian">Ita</option>
+        <option value="">All</option>
+      </select>
       <RecipeList/></>} />
       <Route path="/details/:id" element={<RecipeDetails/>}/>
-      
+    
       </Routes>
     </div>
   );
